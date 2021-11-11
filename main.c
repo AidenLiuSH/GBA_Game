@@ -60,7 +60,7 @@ int main(void) {
         char buffer5[50];
         sprintf(buffer2, "Press ENTER to play");
         sprintf(buffer1, "Objective: Secure all 5 pilots(yellow)!");
-        sprintf(buffer5, "Avoid enemy ships(green))!");
+        sprintf(buffer5, "Avoid enemy ships(green)!");
         //Show text on screen
         waitForVBlank();
         drawString(50, 2, buffer1, RED);
@@ -98,17 +98,19 @@ int main(void) {
           //Set all pilots to be alive
           c[i].alive = 1;
         }
+        //draw background
+        drawRectDMA(0, 0, 240, 160, BLACK);
         //Start game
         state = PLAY;
         break;
       case PLAY:
         waitForVBlank();
+        //clean player trail
+        drawRectDMA(p.row, p.col, p.size, p.size, BLACK);
         //backSpace to reset
         if (KEY_DOWN(BUTTON_SELECT, BUTTONS)) {
             state = WELCOME;
         }
-        //draw background
-        drawRectDMA(0, 0, 240, 160, BLACK);
         
         //directional control
         if (KEY_DOWN(BUTTON_UP, BUTTONS)) {
@@ -141,12 +143,24 @@ int main(void) {
         }
         //draw player
         drawRectDMA(p.row, p.col, p.size, p.size, p.color);
-        
+
+        //clean enemy trail
+        for (int i = 0; i < ENEMYCOUNT; i++) {
+          drawRectDMA(e[i].row, e[i].col, ENEMYSIZE, ENEMYSIZE, BLACK);
+        }
+
+        //clean pilot trail
+        for (int i = 0; i < COINCOUNT; i++) {
+          if (c[i].alive) {
+            drawRectDMA(c[i].row, c[i].col, COINSIZE, COINSIZE, BLACK);
+          }
+        }
+
         //enemy movement
         for (int i = 0; i < ENEMYCOUNT; i++) {
           //Set enemy travel speed and direction
           e[i].row = e[i].row + e[i].rowDirection;
-          e[i].col = e[i].col + e[i].colDirection;
+          e[i].col = e[i].col;
           //Set screen edge boundaries
           if (e[i].row < 0) {
             e[i].row = 0;
@@ -219,7 +233,8 @@ int main(void) {
             }
               char text[12];
               sprintf(text, "%d", count);
-              drawString(5, 230, text, WHITE);
+              drawRectDMA(10, 220, 7, 7, BLACK);
+              drawString(10, 220, text, WHITE);
               drawImageDMA(c[i].row, c[i].col, COINSIZE, COINSIZE, rescue);
           }
         }
