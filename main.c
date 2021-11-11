@@ -60,12 +60,12 @@ int main(void) {
         char buffer5[50];
         sprintf(buffer2, "Press ENTER to play");
         sprintf(buffer1, "Objective: Secure all 5 pilots(yellow)!");
-        sprintf(buffer5, "Avoid enemy ships(blue)!");
+        sprintf(buffer5, "Avoid enemy ships(green))!");
         //Show text on screen
         waitForVBlank();
-        drawString(129, 2, buffer1, RED);
-        drawString(139, 50, buffer5, RED);
-        drawString(149, 60, buffer2, RED);
+        drawString(50, 2, buffer1, RED);
+        drawString(65, 50, buffer5, RED);
+        drawString(80, 60, buffer2, RED);
         //Press enter to start game(go to game setup)
         if (KEY_DOWN(BUTTON_START, BUTTONS)) {
             state = START;
@@ -78,7 +78,6 @@ int main(void) {
         p.col = WIDTH/2 - p.size/2; 
         p.color = PLAYERCOLOR;
         p.speed = PLAYERSPEED;
-        //p.count = PLAYERCOUNT;
 
         //setup enemies
         for (int i = 0; i < ENEMYCOUNT; i++) {
@@ -87,7 +86,6 @@ int main(void) {
           e[i].col = rand() % WIDTH;
           //Rrandomize enemy directions
           e[i].rowDirection = directions[rand() % nDirections];
-          //e[i].colDirection = directions[rand() % nDirections];
         }
         //setup pilots
         for (int i = 0; i < COINCOUNT; i++) {
@@ -111,7 +109,6 @@ int main(void) {
         }
         //draw background
         drawRectDMA(0, 0, 240, 160, BLACK);
-        //draw player
         
         //directional control
         if (KEY_DOWN(BUTTON_UP, BUTTONS)) {
@@ -222,7 +219,7 @@ int main(void) {
             }
               char text[12];
               sprintf(text, "%d", count);
-              drawString(10, 220, text, WHITE);
+              drawString(5, 230, text, WHITE);
               drawImageDMA(c[i].row, c[i].col, COINSIZE, COINSIZE, rescue);
           }
         }
@@ -237,7 +234,7 @@ int main(void) {
         drawFullScreenImageDMA(winscreen);
         char buffer3[50];
         sprintf(buffer3, "Press ENTER to play again!");
-        drawString(149, 45, buffer3, RED);
+        drawString(130, 45, buffer3, RED);
         //Play again
         if (KEY_DOWN(BUTTON_START, BUTTONS)) {
           state = START;
@@ -253,7 +250,7 @@ int main(void) {
         drawFullScreenImageDMA(losescreen);
         char buffer4[50];
         sprintf(buffer4, "Press ENTER to play again.");
-        drawString(149, 45, buffer4, RED);
+        drawString(130, 45, buffer4, RED);
         //Play again
         if (KEY_DOWN(BUTTON_START, BUTTONS)) {
             state = START;
