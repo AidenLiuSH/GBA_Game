@@ -78,6 +78,7 @@ int main(void) {
         p.col = WIDTH/2 - p.size/2; 
         p.color = PLAYERCOLOR;
         p.speed = PLAYERSPEED;
+        //p.count = PLAYERCOUNT;
 
         //setup enemies
         for (int i = 0; i < ENEMYCOUNT; i++) {
@@ -86,7 +87,7 @@ int main(void) {
           e[i].col = rand() % WIDTH;
           //Rrandomize enemy directions
           e[i].rowDirection = directions[rand() % nDirections];
-          e[i].colDirection = directions[rand() % nDirections];
+          //e[i].colDirection = directions[rand() % nDirections];
         }
         //setup pilots
         for (int i = 0; i < COINCOUNT; i++) {
@@ -111,7 +112,6 @@ int main(void) {
         //draw background
         drawRectDMA(0, 0, 240, 160, BLACK);
         //draw player
-        drawRectDMA(p.row, p.col, p.size, p.size, BLACK);
         
         //directional control
         if (KEY_DOWN(BUTTON_UP, BUTTONS)) {
@@ -155,13 +155,13 @@ int main(void) {
             e[i].row = 0;
             e[i].rowDirection = -e[i].rowDirection;
           }
-          if (e[i].col < 0) {
-            e[i].col = 0;
-            e[i].colDirection = -e[i].colDirection;
-          }
           if (e[i].row > HEIGHT - ENEMYSIZE) {
             e[i].row = HEIGHT - ENEMYSIZE;
             e[i].rowDirection = -e[i].rowDirection;
+          }
+          if (e[i].col < 0) {
+            e[i].col = 0;
+            e[i].colDirection = -e[i].colDirection;
           }
           if (e[i].col > WIDTH - ENEMYSIZE) {
             e[i].col = WIDTH - ENEMYSIZE;
@@ -174,6 +174,7 @@ int main(void) {
           //draw enemy at pixel location
           drawImageDMA(e[i].row, e[i].col, ENEMYSIZE, ENEMYSIZE, alien);
         }
+        
         //pilot movement
         for (int i = 0; i < COINCOUNT; i++) {
           //Set enemy travel speed and direction
@@ -184,13 +185,13 @@ int main(void) {
             c[i].row = 0;
             c[i].rowDirection = -c[i].rowDirection;
           }
-          if (c[i].col < 0) {
-            c[i].col = 0;
-            c[i].colDirection = -c[i].colDirection;
-          }
           if (c[i].row > HEIGHT - COINSIZE) {
             c[i].row = HEIGHT - COINSIZE;
             c[i].rowDirection = -c[i].rowDirection;
+          }
+          if (c[i].col < 0) {
+            c[i].col = 0;
+            c[i].colDirection = -c[i].colDirection;
           }
           if (c[i].col > WIDTH - COINSIZE) {
             c[i].col = WIDTH - COINSIZE;
@@ -210,12 +211,21 @@ int main(void) {
               }
             }
           }
-        
           //Draw pilot if there are still left
+          //Draw number of pilots left to rescue
+          int count = 0;
           if (c[i].alive) {
+            for (int j = 0; j < COINCOUNT; j++) {
+              if (c[j].alive) {
+                count++;
+              }
+            }
+              char text[12];
+              sprintf(text, "%d", count);
+              drawString(10, 220, text, WHITE);
               drawImageDMA(c[i].row, c[i].col, COINSIZE, COINSIZE, rescue);
           }
-      }
+        }
         break;
       case WIN:
         waitForVBlank();

@@ -11,13 +11,14 @@
 #include "images/losescreen.h"
 
 
-#define ENEMYCOUNT (4)
+#define ENEMYCOUNT (5)
 #define ENEMYSIZE (8)
 #define COINCOUNT (5)
-#define COINSIZE (8)
+#define COINSIZE (5)
 #define PLAYERSPEED (2)
 #define PLAYERCOLOR (WHITE)
 #define PLAYERSIZE (7)
+#define PLAYERCOUNT (5)
 
 struct player {
     int row;
